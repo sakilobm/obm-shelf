@@ -1,57 +1,60 @@
-import React, { useState } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native'
+import React from 'react';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, IconButton, useTheme } from 'react-native-paper';
 import Svg, { Path, Rect } from 'react-native-svg';
-import { FontFamily } from "../GlobalStyles";
+import CustomText from '../common/CustomText';
 
-const HeaderBar = () => {
-    const [selectedButton, setSelectedButton] = useState('all');
-    const buttons = ['all', 'mugs', 'frames', 'albums'];
-    {/* //TODO: Title Should be Run Dynamicly Rendered */ }
+const HomeHeader: React.FC = () => {
+    const { colors } = useTheme();
+
     return (
-        <View style={styles.header} >
-            <View style={styles.watermarkContainer}>
-                <Text style={styles.watermark}>
-                    Order From The {'\n'}
-                    Best Of<Text style={styles.mugsTitle}> Mugs</Text>
+        <View style={styles.container}>
+            <View style={styles.textWrapper}>
+                <CustomText variant="heading">Order From Best Mugs</CustomText>
+                <Text style={[styles.heading, { color: colors.onBackground }]}>
+                    Order From The{'\n'}
+                    Best Of <Text style={{ color: colors.primary }}>Mugs</Text>
                 </Text>
+                
             </View>
-            <TouchableOpacity style={styles.svgCont}>
-                <Svg width="69" height="95" viewBox="0 0 69 95" fill="none">
-                    <Rect x="2" y="2" width="65" height="91" rx="32.5" fill="white" stroke="#F3F3F3" strokeWidth="6" />
-                    <Path d="M27 40L41 40" stroke="black" stroke-width="2" stroke-linecap="round" />
-                    <Path d="M22 49H46" stroke="black" stroke-width="2" stroke-linecap="round" />
-                    <Path d="M27 58L41 58" stroke="black" stroke-width="2" stroke-linecap="round" />
-                </Svg>
-            </TouchableOpacity>
+            <View style={styles.iconWrapper}>
+                <TouchableOpacity>
+                    <Svg width="69" height="95" viewBox="0 0 69 95" fill="none">
+                        <Rect x="2" y="2" width="65" height="91" rx="32.5" fill="white" stroke="#F3F3F3" strokeWidth="6" />
+                        <Path d="M27 40L41 40" stroke="black" stroke-width="2" stroke-linecap="round" />
+                        <Path d="M22 49H46" stroke="black" stroke-width="2" stroke-linecap="round" />
+                        <Path d="M27 58L41 58" stroke="black" stroke-width="2" stroke-linecap="round" />
+                    </Svg>
+                </TouchableOpacity>
+            </View>
         </View>
-    )
-}
-const styles = StyleSheet.create({
-    header: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        alignItems: 'center',
-        marginTop: 15,
-    },
-    watermarkContainer: {
-        marginLeft: 20,
-    },
-    watermark: {
-        top: 40,
-        fontSize: 30,
-        color: 'black',
-        fontFamily: 'Raleway-Medium',
-        fontWeight: 'normal',
-    },
-    svgCont: {
-        top: 40,
-        marginRight: 5,
-    },
-    mugsTitle: {
-        color: '#DBBF2E',
-        fontFamily: 'Raleway-Bold',
-        fontWeight: '200',
-    },
+    );
+};
 
+const styles = StyleSheet.create({
+    container: {
+        marginBottom: 20,
+        marginHorizontal: 16,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    textWrapper: {
+        flex: 1,
+    },
+    heading: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        lineHeight: 32,
+    },
+    iconWrapper: {
+        backgroundColor: '#EFEFEF',
+        borderRadius: 30,
+    },
+    iconButton: {
+        backgroundColor: '#FFFFFF',
+        margin: 4,
+    },
 });
-export default HeaderBar;
+
+export default HomeHeader;

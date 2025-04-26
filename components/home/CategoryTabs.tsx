@@ -1,48 +1,94 @@
-import React from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
-import { Chip, useTheme } from 'react-native-paper';
+import React, { useState } from 'react';
+import { Text, View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import { FontFamily } from '../GlobalStyles'; // Optional, if you're using a custom font
 
 const categories = [
-    { title: 'All', route: '/' },
-    { title: 'Mugs', route: '/mug' },
-    { title: 'Albums', route: '/albums' },
+    { title: 'All', icon: null, route: '/' },
+    { title: 'Mugs', icon: 'cafe-outline', route: '/mug' },
+    { title: 'Frame', icon: 'images-outline', route: '/product-frame' },
+    { title: 'Album', icon: 'albums-outline', route: '/album' },
 ];
 
-const CategoryTabs: React.FC = () => {
-    const { colors } = useTheme();
+const TabBarCategory = () => {
+    const [selected, setSelected] = useState('Mugs');
     const router = useRouter();
 
-    const handleSelect = (route: string) => {
-        router.push(route);
+    const handlePress = (cat) => {
+        setSelected(cat.title);
+        if (cat.route) {
+            router.push(cat.route);
+        }
     };
 
     return (
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.scroll}>
-            {categories.map((cat) => (
-                <View key={cat.title} style={styles.chipWrapper}>
-                    <Chip
-                        mode="outlined"
-                        onPress={() => handleSelect(cat.route)}
-                        style={{ backgroundColor: colors.surface }}
-                        textStyle={{ color: colors.primary }}
+        <View style={styles.container}>
+            {categories.map((cat, index) => {
+                const isSelected = selected === cat.title;
+                return (
+                    <TouchableOpacity
+                        key={index}
+                        onPress={() => handlePress(cat)}
+                        style={isSelected ? styles.selectedButton : styles.unSelectedButton}
                     >
-                        {cat.title}
-                    </Chip>
-                </View>
-            ))}
-        </ScrollView>
+                        {cat.icon && (
+                            <Ionicons
+                                name={cat.icon}
+                                size={25}
+                                color={isSelected ? '#DBBF2E' : '#1A1A1A'}
+                            />
+                        )}
+                        {isSelected && (
+                            <Text style={styles.selectedText}>{cat.title}</Text>
+                        )}
+                        {!cat.icon && (
+                            <Text style={isSelected ? styles.selectedText : styles.defaultText}>
+                                {cat.title}
+                            </Text>
+                        )}
+                    </TouchableOpacity>
+                );
+            })}
+        </View>
     );
 };
 
 const styles = StyleSheet.create({
-    scroll: {
-        paddingVertical: 10,
-        paddingHorizontal: 16,
+    container: {
+        flexDirection: 'row',
+        marginTop: 60,
     },
-    chipWrapper: {
-        marginRight: 10,
+    unSelectedButton: {
+        marginLeft: 15,
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 69,
+        height: 69,
+        borderRadius: 38,
+        backgroundColor: '#E0DFE2',
+    },
+    selectedButton: {
+        flexDirection: 'row',
+        marginLeft: 7,
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 121,
+        height: 69,
+        borderRadius: 38,
+        backgroundColor: '#1A1A1A',
+    },
+    selectedText: {
+        color: 'white',
+        fontSize: 13,
+        fontFamily: 'RocknRoll One',
+        marginLeft: 8,
+    },
+    defaultText: {
+        color: 'black',
+        fontSize: 13,
+        fontFamily: 'RocknRoll One',
     },
 });
 
-export default CategoryTabs;
+export default TabBarCategory;

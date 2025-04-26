@@ -4,6 +4,7 @@ import { useTheme, Text, IconButton } from 'react-native-paper';
 import HomeHeader from '../components/home/HomeHeader';
 import CategoryTabs from '../components/home/CategoryTabs';
 import MugProductCard from '../components/mug/MugProductCard';
+import BottomSheet from '../components/home/BottomSheet';
 
 export default function HomeScreen() {
   const { colors } = useTheme();
@@ -19,7 +20,9 @@ export default function HomeScreen() {
         <IconButton icon="arrow-right" onPress={() => { }} />
       </View>
 
-      <MugProductCard width={width * 0.8} />
+      <MugProductCard />
+
+      <BottomSheet />
     </ScrollView>
   );
 }
