@@ -10,12 +10,9 @@ const HomeHeader: React.FC = () => {
     return (
         <View style={styles.container}>
             <View style={styles.textWrapper}>
-                <CustomText variant="heading">Order From Best Mugs</CustomText>
-                <Text style={[styles.heading, { color: colors.onBackground }]}>
-                    Order From The{'\n'}
-                    Best Of <Text style={{ color: colors.primary }}>Mugs</Text>
-                </Text>
-                
+                <CustomText variant="heading">Order From The{'\n'}
+                    Best Of <Text style={{ color: '#DBBF2E' }}>Mugs</Text>
+                </CustomText>
             </View>
             <View style={styles.iconWrapper}>
                 <TouchableOpacity>

@@ -5,32 +5,47 @@ import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from 'react-native-paper';
 import CustomText from '../../components/common/CustomText';
 import mugs from '../../data/mug/mugs';
+import { useCart } from '../../contexts/CartContext';
 
 const { width } = Dimensions.get('window');
 
 export default function ProductMugScreen() {
+  const { addToCart } = useCart();
   const { colors } = useTheme();
   const router = useRouter();
 
-  const [quantity, setQuantity] = useState(1);
+  const [quantities, setQuantities] = useState<{ [id: number]: number }>({});
   const [currentMugIndex, setCurrentMugIndex] = useState(0);
-
-  const handleIncrease = () => setQuantity((q) => q + 1);
-  const handleDecrease = () => {
-    if (quantity > 1) setQuantity((q) => q - 1);
-  };
 
   const handleScroll = (event: any) => {
     const slide = Math.round(event.nativeEvent.contentOffset.x / width);
     setCurrentMugIndex(slide);
-    setQuantity(1); // Reset quantity on changing mug
+  };
+
+  const handleIncrease = () => {
+    const currentId = mugs[currentMugIndex].id;
+    setQuantities((prev) => ({
+      ...prev,
+      [currentId]: (prev[currentId] || 1) + 1,
+    }));
+  };
+
+  const handleDecrease = () => {
+    const currentId = mugs[currentMugIndex].id;
+    setQuantities((prev) => {
+      const currentQty = prev[currentId] || 1;
+      if (currentQty > 1) {
+        return {
+          ...prev,
+          [currentId]: currentQty - 1,
+        };
+      }
+      return prev;
+    });
   };
 
   const selectedMug = mugs[currentMugIndex];
-
-  const getNumericPrice = (priceString: string) => {
-    return parseFloat(priceString.replace(/[^\d.]/g, ''));
-  };
+  const selectedQuantity = quantities[selectedMug.id] || 1;
 
   return (
     <View style={styles.container}>
@@ -42,7 +57,7 @@ export default function ProductMugScreen() {
       {/* Mug Scroll */}
       <FlatList
         data={mugs}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.id.toString()}
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}
@@ -75,7 +90,7 @@ export default function ProductMugScreen() {
         </TouchableOpacity>
 
         <CustomText variant="heading" style={{ marginHorizontal: 20 }}>
-          {quantity.toString().padStart(2, '0')}
+          {selectedQuantity.toString().padStart(2, '0')}
         </CustomText>
 
         <TouchableOpacity onPress={handleIncrease}>
@@ -85,17 +100,28 @@ export default function ProductMugScreen() {
 
       {/* Price Tag */}
       <View style={styles.priceTag}>
-        <CustomText variant="subheading">₹ {(getNumericPrice(selectedMug.price) * quantity).toFixed(2)}</CustomText>
+        {/* TODO 779 Price Not Showing We should Fix That */}
+        <CustomText variant="subheading">₹ {(selectedMug.price * selectedQuantity).toFixed(2)} </CustomText>
       </View>
 
       {/* Add to Cart */}
-      <TouchableOpacity onPress={() => router.push('/cart/index')} style={styles.addToCartButton}>
+      <TouchableOpacity onPress={() => {
+        addToCart({
+          id: selectedMug.id,
+          title: selectedMug.title,
+          subtitle: selectedMug.category,
+          price: selectedMug.price,
+          image: selectedMug.image,
+        });
+        router.push('/cart')
+      }}
+        style={styles.addToCartButton}>
         <CustomText variant="subheading" style={{ color: 'black' }}>
           Add To Cart
         </CustomText>
         <Ionicons name="cart" size={24} color="black" style={{ marginLeft: 8 }} />
       </TouchableOpacity>
-    </View>
+    </View >
   );
 }
 
