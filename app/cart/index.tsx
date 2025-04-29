@@ -3,12 +3,14 @@ import { View, StyleSheet, FlatList, TouchableOpacity, Image, Dimensions } from 
 import { useCart } from '../../contexts/CartContext';
 import CustomText from '../../components/common/CustomText';
 import { useRouter } from 'expo-router';
+import { Swipeable } from 'react-native-gesture-handler';
 import { Ionicons } from '@expo/vector-icons';
+import Svg, { Path, Rect } from 'react-native-svg';
 
 const { width, height } = Dimensions.get('window');
 
 export default function CartScreen() {
-    const { cartItems, totalAmount } = useCart();
+    const { cartItems, totalAmount, removeFromCart } = useCart();
     const router = useRouter();
 
     return (
@@ -20,7 +22,7 @@ export default function CartScreen() {
                     Cart
                 </CustomText>
                 <View style={styles.cartCountBubble}>
-                    <CustomText variant="small" style={{ color: 'black' }}>
+                    <CustomText variant="body" style={{ color: 'black' }}>
                         {cartItems.length}
                     </CustomText>
                 </View>
@@ -33,33 +35,46 @@ export default function CartScreen() {
                     data={cartItems}
                     keyExtractor={(item) => item.id.toString()}
                     contentContainerStyle={styles.cartList}
-                    renderItem={({ item }) => (
-                        <View style={styles.cartItem}>
 
-                            {/* Mug Image */}
-                            <View style={styles.imageWrapper}>
-                                <Image source={item.image} style={styles.cartItemImage} resizeMode="cover" />
-                            </View>
+                    renderItem={({ item }) => {
 
-                            {/* Title + Type */}
-                            <View style={styles.cartItemDetails}>
-                                <CustomText variant="subheading" style={{ color: 'white' }}>
-                                    {item.title}
-                                </CustomText>
-                                <CustomText variant="small" style={{ color: 'gray', marginTop: 2 }}>
-                                    {item.subtitle}
-                                </CustomText>
-                            </View>
+                        const renderRightActions = () => (
+                            <TouchableOpacity
+                                onPress={() => removeFromCart(item.id)}
+                                style={styles.deleteButton}
+                            >
+                                <Ionicons name="trash" size={24} color="white" />
+                            </TouchableOpacity>
+                        );
 
-                            {/* Price */}
-                            <View style={styles.priceBubble}>
-                                <CustomText variant="subheading" style={{ color: 'black' }}>
-                                    ₹{item.price}
-                                </CustomText>
-                            </View>
+                        return (
+                            <Swipeable renderRightActions={renderRightActions}>
+                                <View style={styles.cartItem}>
+                                    <View style={styles.imageWrapper}>
+                                        <Image source={item.image} style={styles.cartItemImage} resizeMode="cover" />
+                                    </View>
 
-                        </View>
-                    )}
+                                    <View style={styles.cartItemDetails}>
+                                        <CustomText variant="subheading" style={{ color: 'white' }}>
+                                            {item.title}
+                                        </CustomText>
+                                        <CustomText variant="small" style={{ color: 'gray', marginTop: 2 }}>
+                                            {item.subtitle}
+                                        </CustomText>
+                                        <CustomText variant="small" style={{ color: 'white', marginTop: 2 }}>
+                                            x{item.quantity} pcs
+                                        </CustomText>
+                                    </View>
+
+                                    <View style={styles.priceBubble}>
+                                        <CustomText variant="subheading" style={{ color: 'black' }}>
+                                            ₹ {(item.price * item.quantity).toFixed(2)}
+                                        </CustomText>
+                                    </View>
+                                </View>
+                            </Swipeable>
+                        );
+                    }}
                 />
 
                 {/* Delivery and Total Amount */}
@@ -85,6 +100,10 @@ export default function CartScreen() {
                     <CustomText variant="subheading" style={{ color: 'black' }}>
                         Make Payment
                     </CustomText>
+                    <Svg width="105" height="80" viewBox="0 0 105 80" fill="none">
+                        <Rect x="104.937" y="0.0634766" width="79.1111" height="104.54" rx="39.5556" transform="rotate(90 104.937 0.0634766)" fill="#FFEC89" />
+                    </Svg>
+
                     <Ionicons name="arrow-forward-circle" size={24} color="black" style={{ marginLeft: 10 }} />
                 </TouchableOpacity>
 
@@ -99,17 +118,17 @@ const styles = StyleSheet.create({
         backgroundColor: 'white', // Whole page white background
     },
     header: {
-        height: height * 0.1,
-        paddingHorizontal: 20,
+        paddingHorizontal: 30,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
         backgroundColor: 'white',
         paddingTop: 50,
+        marginBottom: 20,
     },
     cartCountBubble: {
         backgroundColor: '#FFEC89',
-        paddingHorizontal: 10,
+        paddingHorizontal: 12,
         paddingVertical: 6,
         borderRadius: 20,
     },
@@ -122,7 +141,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
     },
     cartList: {
-        paddingBottom: 100,
+        paddingBottom: 80,
     },
     cartItem: {
         flexDirection: 'row',
@@ -135,7 +154,7 @@ const styles = StyleSheet.create({
     imageWrapper: {
         height: 50,
         width: 50,
-        borderRadius: 25, // <- Circle image
+        borderRadius: 25,
         overflow: 'hidden',
         backgroundColor: '#fff',
         marginRight: 12,
@@ -181,6 +200,7 @@ const styles = StyleSheet.create({
     },
     paymentButton: {
         marginTop: 30,
+        marginBottom: 30,
         backgroundColor: '#FFEC89',
         width: width * 0.8,
         paddingVertical: 16,
@@ -190,4 +210,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         alignSelf: 'center',
     },
+    deleteButton: {
+        backgroundColor: 'red',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 70,
+        borderTopRightRadius: 20,
+        borderBottomRightRadius: 20,
+    },
+
 });
