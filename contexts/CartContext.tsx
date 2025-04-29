@@ -11,9 +11,10 @@ interface CartItem {
 
 interface CartContextType {
     cartItems: CartItem[];
-    addToCart: (item: Omit<CartItem, 'quantity'>) => void;
+    addToCart: (item: CartItem) => void;
     removeFromCart: (id: number) => void;
     totalAmount: number;
+    clearCart: () => void;
 }
 
 const CartContext = createContext<CartContextType | null>(null);
@@ -29,17 +30,35 @@ export const useCart = () => {
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
-    const addToCart = (item: Omit<CartItem, 'quantity'>) => {
-        setCartItems((prev) => {
-            const exist = prev.find((i) => i.id === item.id);
-            if (exist) {
-                return prev.map((i) =>
-                    i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
-                );
+    const clearCart = () => setCartItems([]);
+
+    const addToCart = (newItem: CartItem) => {
+        setCartItems((prevItems) => {
+            const existingItemIndex = prevItems.findIndex(item => item.id === newItem.id);
+
+            // If item already in cart
+            if (existingItemIndex !== -1) {
+                const existingItem = prevItems[existingItemIndex];
+
+                // ✅ If quantity is unchanged, do NOT update cart
+                if (existingItem.quantity === newItem.quantity) {
+                    return prevItems; // no change
+                }
+
+                // ✅ If quantity changed ➜ update it
+                const updatedItems = [...prevItems];
+                updatedItems[existingItemIndex] = {
+                    ...existingItem,
+                    quantity: newItem.quantity
+                };
+                return updatedItems;
             }
-            return [...prev, { ...item, quantity: 1 }];
+
+            // ✅ If item is not in cart ➜ add it
+            return [...prevItems, newItem];
         });
     };
+
 
     const removeFromCart = (id: number) => {
         setCartItems(prev => prev.filter(item => item.id !== id));
@@ -48,7 +67,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const totalAmount = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 50); // 50 = Delivery charge
 
     return (
-        <CartContext.Provider value={{ cartItems, addToCart, totalAmount, removeFromCart }}>
+        <CartContext.Provider value={{ cartItems, addToCart, totalAmount, removeFromCart, clearCart }}>
             {children}
         </CartContext.Provider>
     );

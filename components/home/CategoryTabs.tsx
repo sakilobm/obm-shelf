@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, ScrollView, FlatList } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { FontFamily } from '../GlobalStyles'; // Optional, if you're using a custom font
@@ -7,7 +7,7 @@ import { FontFamily } from '../GlobalStyles'; // Optional, if you're using a cus
 const categories = [
     { title: 'All', icon: null, route: '/' },
     { title: 'Mugs', icon: 'cafe-outline', route: '/mug' },
-    { title: 'Frame', icon: 'images-outline', route: '/product-frame' },
+    { title: 'Frame', icon: 'images-outline', route: '/frame' },
     { title: 'Album', icon: 'albums-outline', route: '/album' },
 ];
 
@@ -24,32 +24,38 @@ const TabBarCategory = () => {
 
     return (
         <View style={styles.container}>
-            {categories.map((cat, index) => {
-                const isSelected = selected === cat.title;
-                return (
-                    <TouchableOpacity
-                        key={index}
-                        onPress={() => handlePress(cat)}
-                        style={isSelected ? styles.selectedButton : styles.unSelectedButton}
-                    >
-                        {cat.icon && (
-                            <Ionicons
-                                name={cat.icon}
-                                size={25}
-                                color={isSelected ? '#DBBF2E' : '#1A1A1A'}
-                            />
-                        )}
-                        {isSelected && (
-                            <Text style={styles.selectedText}>{cat.title}</Text>
-                        )}
-                        {!cat.icon && (
-                            <Text style={isSelected ? styles.selectedText : styles.defaultText}>
-                                {cat.title}
-                            </Text>
-                        )}
-                    </TouchableOpacity>
-                );
-            })}
+            <FlatList
+                data={categories}
+                keyExtractor={(item, index) => index.toString()}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={styles.container}
+                renderItem={({ item }) => {
+                    const isSelected = selected === item.title;
+                    return (
+                        <TouchableOpacity
+                            onPress={() => handlePress(item)}
+                            style={isSelected ? styles.selectedButton : styles.unSelectedButton}
+                        >
+                            {item.icon && (
+                                <Ionicons
+                                    name={item.icon}
+                                    size={25}
+                                    color={isSelected ? '#DBBF2E' : '#1A1A1A'}
+                                />
+                            )}
+                            {isSelected && (
+                                <Text style={styles.selectedText}>{item.title}</Text>
+                            )}
+                            {!item.icon && (
+                                <Text style={isSelected ? styles.selectedText : styles.defaultText}>
+                                    {item.title}
+                                </Text>
+                            )}
+                        </TouchableOpacity>
+                    );
+                }}
+            />
         </View>
     );
 };
@@ -57,7 +63,7 @@ const TabBarCategory = () => {
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        marginTop: 60,
+        marginTop: 15,
     },
     unSelectedButton: {
         marginLeft: 15,

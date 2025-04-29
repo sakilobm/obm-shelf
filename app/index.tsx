@@ -1,5 +1,5 @@
-import { View, StyleSheet, ScrollView, useWindowDimensions } from 'react-native';
-import { useTheme, Text, IconButton } from 'react-native-paper';
+import { StyleSheet, ScrollView, useWindowDimensions } from 'react-native';
+import { useTheme } from 'react-native-paper';
 
 import HomeHeader from '../components/home/HomeHeader';
 import CategoryTabs from '../components/home/CategoryTabs';
@@ -14,14 +14,7 @@ export default function HomeScreen() {
     <ScrollView style={{ backgroundColor: colors.background }} contentContainerStyle={styles.container}>
       <HomeHeader />
       <CategoryTabs />
-
-      <View style={styles.titleRow}>
-        <Text variant="titleMedium">Mugs Collections</Text>
-        <IconButton icon="arrow-right" onPress={() => { }} />
-      </View>
-
       <MugProductCard />
-
       <BottomSheet />
     </ScrollView>
   );
@@ -29,8 +22,8 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 20,
-    paddingHorizontal: 16,
+    // marginVertical: 20,
+    // marginHorizontal: 16,
   },
   titleRow: {
     flexDirection: 'row',

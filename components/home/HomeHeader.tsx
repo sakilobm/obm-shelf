@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import { Text, IconButton, useTheme } from 'react-native-paper';
+import { Text, useTheme } from 'react-native-paper';
 import Svg, { Path, Rect } from 'react-native-svg';
 import CustomText from '../common/CustomText';
 
@@ -30,7 +30,7 @@ const HomeHeader: React.FC = () => {
 
 const styles = StyleSheet.create({
     container: {
-        marginBottom: 20,
+        marginTop: 5,
         marginHorizontal: 16,
         flexDirection: 'row',
         justifyContent: 'space-between',

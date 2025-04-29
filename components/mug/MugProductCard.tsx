@@ -5,6 +5,7 @@ import { useRouter } from 'expo-router';
 import { BlurView } from 'expo-blur';
 import CustomText from '../common/CustomText';
 import data from '../../data/mug/mugs';
+import { Ionicons } from '@expo/vector-icons';
 
 const { width } = Dimensions.get('window');
 const CARD_WIDTH = width * 0.7;
@@ -18,6 +19,11 @@ const MugProductList = () => {
 
     return (
         <View>
+            <View style={styles.titleRow}>
+                <CustomText variant="heading">Mugs Collections</CustomText>
+                <Ionicons name="arrow-forward" size={40} color="black" />
+            </View>
+
             <Animated.FlatList
                 data={data}
                 keyExtractor={(item) => item.title}
@@ -49,22 +55,23 @@ const MugProductList = () => {
                         <TouchableOpacity onPress={() => router.push('/mug')}>
                             <Animated.View style={[styles.card, { backgroundColor: item.color, transform: [{ scale }] }]}>
                                 <BlurView intensity={250} style={styles.blurTopLeft} />
-
+                                {/* Top Content */}
                                 <View style={styles.textContainer}>
                                     <CustomText variant="heading" style={{ color: 'white' }}>{item.title}</CustomText>
                                     <View style={[styles.categoryBadge, { backgroundColor: item.cateConClr }]}>
                                         <CustomText variant="small" style={{ color: item.color }}>{item.category}</CustomText>
                                     </View>
                                 </View>
+                                {/* Image */}
+                                <View style={styles.productImageCon}>
+                                    <Image source={item.image} style={styles.productImage} resizeMode="contain" />
+                                </View>
 
-                                <Image source={item.image} style={styles.productImage} resizeMode="contain" />
-
-                                <BlurView intensity={150} style={styles.buyContainer}>
-                                    <CustomText variant="subheading">₹{item.price}</CustomText>
-                                    <TouchableOpacity>
-                                        <Image style={styles.buyIcon} source={require('../../assets/png/Buy.png')} />
-                                    </TouchableOpacity>
-                                </BlurView>
+                                {/* Button */}
+                                <TouchableOpacity style={styles.buyButton}>
+                                    <CustomText variant="heading" style={{ fontSize: 20, }}>₹{item.price}</CustomText>
+                                    <Image style={styles.buyIcon} source={require('../../assets/png/Buy.png')} />
+                                </TouchableOpacity>
                             </Animated.View>
                         </TouchableOpacity>
                     );
@@ -75,11 +82,19 @@ const MugProductList = () => {
 };
 
 const styles = StyleSheet.create({
+    titleRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginTop: 25,
+        marginBottom: 20,
+        paddingHorizontal: 20,
+    },
     card: {
         width: CARD_WIDTH,
         height: CARD_WIDTH * 1.2,
         marginRight: SPACING,
-        borderRadius: 30,
+        borderRadius: 47,
         overflow: 'hidden',
         justifyContent: 'center',
         alignItems: 'center',
@@ -105,11 +120,13 @@ const styles = StyleSheet.create({
         paddingVertical: 4,
         borderRadius: 20,
     },
-    productImage: {
-        width: 220,
-        height: 220,
+    productImageCon: {
     },
-    buyContainer: {
+    productImage: {
+        width: 300,
+        height: 290,
+    },
+    buyButton: {
         position: 'absolute',
         bottom: 30,
         left: 40,

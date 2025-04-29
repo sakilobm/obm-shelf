@@ -20,6 +20,10 @@ export default function ProductMugScreen() {
   const [selectedMugs, setSelectedMugs] = useState<{ [id: number]: boolean }>({});
   const [currentMugIndex, setCurrentMugIndex] = useState(0);
 
+  const selectedMug = mugs[currentMugIndex];
+  const selectedQuantity = quantities[selectedMug.id] || 1;
+  const isSelected = selectedMugs[selectedMug.id] || false;
+
   const handleScroll = (event: any) => {
     const slide = Math.round(event.nativeEvent.contentOffset.x / width);
     setCurrentMugIndex(slide);
@@ -27,6 +31,11 @@ export default function ProductMugScreen() {
 
   const handleIncrease = () => {
     const currentId = mugs[currentMugIndex].id;
+
+    if (!selectedMugs[currentId]) {
+      toggleSelectMug(currentId)
+    }
+
     setQuantities((prev) => ({
       ...prev,
       [currentId]: (prev[currentId] || 1) + 1,
@@ -54,11 +63,11 @@ export default function ProductMugScreen() {
     }));
   };
 
-  const selectedMug = mugs[currentMugIndex];
-  const selectedQuantity = quantities[selectedMug.id] || 1;
-  const isSelected = selectedMugs[selectedMug.id] || false;
-
   const handleAddSelectedToCart = () => {
+    if (!isSelected) {
+      alert('Please select at least one mug to add to the cart.');
+      return;
+    }
     Object.keys(selectedMugs).forEach((id) => {
       if (selectedMugs[Number(id)]) {
         const mug = mugs.find((m) => m.id === Number(id));

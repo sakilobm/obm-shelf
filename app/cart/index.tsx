@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, StyleSheet, FlatList, TouchableOpacity, Image, Dimensions } from 'react-native';
 import { useCart } from '../../contexts/CartContext';
 import CustomText from '../../components/common/CustomText';
@@ -12,6 +12,14 @@ const { width, height } = Dimensions.get('window');
 export default function CartScreen() {
     const { cartItems, totalAmount, removeFromCart } = useCart();
     const router = useRouter();
+
+    const handleMakePayment = () => {
+        if (cartItems.length === 0) {
+            alert('Your cart is empty! Please add items to your cart before proceeding to payment.');
+            return;
+        }
+        router.push('/PaymentSuccess');
+    };
 
     return (
         <View style={styles.page}>
@@ -37,7 +45,6 @@ export default function CartScreen() {
                     contentContainerStyle={styles.cartList}
 
                     renderItem={({ item }) => {
-
                         const renderRightActions = () => (
                             <TouchableOpacity
                                 onPress={() => removeFromCart(item.id)}
@@ -91,22 +98,22 @@ export default function CartScreen() {
                         <CustomText variant="heading" style={{ color: 'black' }}>
                             IND {totalAmount.toFixed(0)}
                         </CustomText>
-                        {/* <Image source={require('../../assets/png/TotalImage.png')} style={styles.totalImage} /> */}
                     </View>
                 </View>
 
                 {/* Make Payment Button */}
-                <TouchableOpacity style={styles.paymentButton} onPress={() => { }}>
-                    <CustomText variant="subheading" style={{ color: 'black' }}>
-                        Make Payment
-                    </CustomText>
-                    <Svg width="105" height="80" viewBox="0 0 105 80" fill="none">
-                        <Rect x="104.937" y="0.0634766" width="79.1111" height="104.54" rx="39.5556" transform="rotate(90 104.937 0.0634766)" fill="#FFEC89" />
-                    </Svg>
-
-                    <Ionicons name="arrow-forward-circle" size={24} color="black" style={{ marginLeft: 10 }} />
+                <TouchableOpacity style={styles.paymentButton} onPress={handleMakePayment}>
+                    <View style={styles.btnContent}>
+                        <CustomText variant="heading" style={styles.btnText}>
+                            Make Payment
+                        </CustomText>
+                        <Image
+                            source={require('../../assets/png/make_payment_btn_icon.png')}
+                            style={styles.btnIcon}
+                            resizeMode="contain"
+                        />
+                    </View>
                 </TouchableOpacity>
-
             </View>
         </View>
     );
@@ -201,19 +208,40 @@ const styles = StyleSheet.create({
     paymentButton: {
         marginTop: 30,
         marginBottom: 30,
-        backgroundColor: '#FFEC89',
-        width: width * 0.8,
-        paddingVertical: 16,
-        borderRadius: 30,
-        flexDirection: 'row',
+        backgroundColor: 'white',
+        width: width * 0.85,
+        height: 85,
+        borderRadius: 60,
         justifyContent: 'center',
         alignItems: 'center',
         alignSelf: 'center',
+        paddingHorizontal: 24,
     },
+
+    btnContent: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: '100%',
+    },
+
+    btnText: {
+        fontSize: 20,
+        fontFamily: 'Raleway-Bold',
+        color: 'black',
+        marginLeft: width * 0.1,
+    },
+
+    btnIcon: {
+        width: 70,
+        height: 70,
+    },
+
     deleteButton: {
         backgroundColor: 'red',
         justifyContent: 'center',
         alignItems: 'center',
+        height: '80%',
         width: 70,
         borderTopRightRadius: 20,
         borderBottomRightRadius: 20,
