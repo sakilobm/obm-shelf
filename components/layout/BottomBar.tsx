@@ -13,27 +13,32 @@ const BottomBarNavigation = () => {
 
     return (
         <View style={styles.container}>
-            {/* <SvgXml style={styles.svgBackground} xml={svgXml} /> */}
+            <View style={styles.dragLine} />
+            {/* <SvgXml xml={svgXml} style={styles.svgBackground} /> */}
+
+            {/* Bottom Bar */}
 
             <View style={styles.bottomBar}>
-                <TouchableOpacity style={styles.circleContainer}>
-                    <Text style={styles.circleText}>1</Text>
-                </TouchableOpacity>
+                <View style={styles.cartItem}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <TouchableOpacity style={styles.circleContainer}>
+                            <Text style={styles.circleText}>1</Text>
+                        </TouchableOpacity>
 
-                <View style={styles.cartCenter}>
-                    <Text style={styles.cartText}>
-                        Cart
-                        <Text style={styles.cartItemCount}> 1 Item</Text>
-                    </Text>
+                        <View style={styles.cartCenter}>
+                            <Text style={styles.cartText}>Cart</Text>
+                            <Text style={styles.cartItemCount}> 1 Item</Text>
+                        </View>
+                    </View>
+
+                    <TouchableOpacity style={styles.cartButton}>
+                        <Image
+                            source={require('../../assets/png/cartImage.png')}
+                            style={styles.cartIcon}
+                            resizeMode="contain"
+                        />
+                    </TouchableOpacity>
                 </View>
-
-                <TouchableOpacity style={styles.cartButton}>
-                    <Image
-                        source={require('../../assets/png/cartImage.png')}
-                        style={styles.cartIcon}
-                        resizeMode="contain"
-                    />
-                </TouchableOpacity>
             </View>
         </View>
     );
@@ -44,8 +49,15 @@ const styles = StyleSheet.create({
         width: wp('100%'),
         height: hp('15%'), // Bottom bar height dynamic
         position: 'absolute',
-        bottom: 0,
         backgroundColor: 'transparent',
+    },
+    dragLine: {
+        width: 60,
+        height: 5,
+        backgroundColor: '#ccc',
+        borderRadius: 3,
+        marginTop: 10,
+        alignSelf: 'center',
     },
     svgBackground: {
         position: 'absolute',
@@ -53,9 +65,22 @@ const styles = StyleSheet.create({
         height: hp('15%'),
         bottom: 0,
     },
+    cartItem: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        // backgroundColor: '#222',
+        borderWidth: 2,
+        borderColor: '#222',
+        // borderColor: '#FFEC89',
+        padding: 12,
+        borderRadius: 20,
+        width: wp('90%'),
+    },
     bottomBar: {
         flexDirection: 'row',
         alignItems: 'center',
+        alignSelf: 'center',
         justifyContent: 'space-around',
         height: '100%',
         paddingHorizontal: wp('10%'),
@@ -66,14 +91,15 @@ const styles = StyleSheet.create({
         width: hp('5.5%'),
         backgroundColor: '#FFEC89',
         borderRadius: 50,
-        justifyContent: 'center',
-        alignItems: 'center',
+        padding: 10,
     },
     circleText: {
         fontSize: hp('2%'),
         fontFamily: 'Raleway-Medium',
+        textAlign: 'center',
     },
     cartCenter: {
+        marginLeft: wp('5%'),
         alignItems: 'center',
     },
     cartText: {

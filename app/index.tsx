@@ -6,10 +6,12 @@ import CategoryTabs from '../components/home/CategoryTabs';
 import MugProductCard from '../components/mug/MugProductCard';
 import BottomSheet from '../components/home/BottomSheet';
 
+// CSS: For <- LEFT RIGHT -> paddingHorizontal 24
+// CSS: For | TOP marginTop 20 || 15 || 10
+
 export default function HomeScreen() {
   const { colors } = useTheme();
   const { width } = useWindowDimensions();
-
   return (
     <ScrollView style={{ backgroundColor: colors.background }} contentContainerStyle={styles.container}>
       <HomeHeader />

@@ -1,57 +1,117 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import React, { useState, useRef } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Animated,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { AntDesign } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import frames from '../../data/frame/frames';
-import CustomText from '@/components/common/CustomText';
+import frames from '../../data/frame/frames'; // Adjust path if needed
 
-const ProductFrameScreen = () => {
+export default function ProductFrameScreen() {
   const router = useRouter();
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const handleNext = () => {
-    if (currentIndex < frames.length - 1) {
-      setCurrentIndex(prev => prev + 1);
-    }
-  };
-
-  const handlePrevious = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex(prev => prev - 1);
-    }
-  };
+  const slideAnim = useRef(new Animated.Value(0)).current;
+  const textOpacity = useRef(new Animated.Value(1)).current;
+  const textTranslateX = useRef(new Animated.Value(0)).current;
 
   const selectedFrame = frames[currentIndex];
+
+  const animateSlide = (direction: 'left' | 'right') => {
+    const toValue = direction === 'left' ? -300 : 300;
+
+    // Animate image out
+    Animated.parallel([
+      Animated.timing(slideAnim, {
+        toValue,
+        duration: 150,
+        useNativeDriver: true,
+      }),
+      Animated.timing(textOpacity, {
+        toValue: 0,
+        duration: 150,
+        useNativeDriver: true,
+      }),
+      Animated.timing(textTranslateX, {
+        toValue,
+        duration: 150,
+        useNativeDriver: true,
+      }),
+    ]).start(() => {
+      // Update frame
+      setCurrentIndex(prev => {
+        const next = direction === 'left' ? prev - 1 : prev + 1;
+        return Math.max(0, Math.min(frames.length - 1, next));
+      });
+
+      // Reset positions for slide-in
+      slideAnim.setValue(-toValue);
+      textTranslateX.setValue(-toValue);
+
+      // Animate image/text back in
+      Animated.parallel([
+        Animated.timing(slideAnim, {
+          toValue: 0,
+          duration: 150,
+          useNativeDriver: true,
+        }),
+        Animated.timing(textOpacity, {
+          toValue: 1,
+          duration: 150,
+          useNativeDriver: true,
+        }),
+        Animated.timing(textTranslateX, {
+          toValue: 0,
+          duration: 150,
+          useNativeDriver: true,
+        }),
+      ]).start();
+    });
+  };
+
 
   return (
     <View style={styles.container}>
       <View style={styles.topSide}>
-        <AntDesign onPress={() => router.push('/')} style={styles.close} name="closecircleo" size={40} color="white" />
-        <CustomText variant='heading' style={styles.title}>FRAME</CustomText>
+        <AntDesign onPress={() => router.back()} style={styles.close} name="closecircleo" size={40} color="white" />
+        <Text style={styles.tittle}>Frame</Text>
       </View>
-
-      <Image style={styles.frame} source={selectedFrame.image} />
+      {/* Image - FRAME */}
+      <Animated.View style={[styles.frameWrapper, { transform: [{ translateX: slideAnim }] }]}>
+        <Image style={styles.frame} source={selectedFrame.image} />
+      </Animated.View>
 
       <View style={styles.bottomSide}>
+        {/* LEFT RIGHT Button */}
         <View style={styles.slideBtnContainer}>
-          <TouchableOpacity onPress={handlePrevious}>
-            <AntDesign name="leftcircleo" size={40} color="white" />
+          <TouchableOpacity disabled={currentIndex === 0} onPress={() => animateSlide('left')}>
+            <AntDesign name="leftcircleo" size={40} color={currentIndex === 0 ? '#999' : 'white'} />
           </TouchableOpacity>
-          <TouchableOpacity onPress={handleNext}>
-            <AntDesign name="rightcircleo" size={40} color="white" />
+          <TouchableOpacity disabled={currentIndex === frames.length - 1} onPress={() => animateSlide('right')}>
+            <AntDesign name="rightcircleo" size={40} color={currentIndex === frames.length - 1 ? '#999' : 'white'} />
           </TouchableOpacity>
         </View>
-
-        <View style={styles.detailsCon}>
-          <CustomText variant='heading' style={styles.firstTitle}>FINALIST</CustomText>
+        {/* FRAME Name */}
+        <Animated.View
+          style={[
+            styles.detailsCon,
+            {
+              opacity: textOpacity,
+              transform: [{ translateX: textTranslateX }],
+            },
+          ]}
+        >
+          <Text style={styles.firstTitle}>FINALIST</Text>
           <Text style={styles.secondTitle}>{selectedFrame.name}</Text>
-        </View>
-
+        </Animated.View>
+        {/* MORE STATE Button */}
         <TouchableOpacity
-          onPress={() =>
-            router.push(`/frame/${selectedFrame.id}`)
-          }
+          onPress={() => router.push(`/frame/${selectedFrame.id}`)}
           style={styles.moreBtn}
         >
           <Text style={styles.moreBtnText}>MORE STATE</Text>
@@ -59,7 +119,7 @@ const ProductFrameScreen = () => {
       </View>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {},
@@ -73,20 +133,24 @@ const styles = StyleSheet.create({
     top: hp('6%'),
     right: wp('6%'),
   },
-  title: {
-    fontFamily: 'Rubik-Mono-One',
+  tittle: {
+    fontFamily: 'Rubik Mono One',
     color: '#4A4A4A',
-    fontSize: wp('24%'),
+    fontSize: wp('20%'),
     alignSelf: 'center',
     marginTop: hp('10%'),
   },
-  frame: {
+  frameWrapper: {
     position: 'absolute',
     zIndex: 1,
     top: hp('32%'),
     marginLeft: hp('10%'),
     width: wp('60%'),
     height: hp('60%'),
+  },
+  frame: {
+    width: '100%',
+    height: '100%',
   },
   bottomSide: {
     backgroundColor: '#0085AF',
@@ -104,11 +168,10 @@ const styles = StyleSheet.create({
     marginTop: hp('20%'),
   },
   firstTitle: {
-    fontSize: 20,
     textAlign: 'center',
     fontFamily: 'Righteous',
     marginBottom: hp('1.5%'),
-    color: 'black',
+    color: 'white',
   },
   secondTitle: {
     fontFamily: 'Righteous',
@@ -124,11 +187,10 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',
+    zIndex: 10,
   },
   moreBtnText: {
     fontSize: 9,
-    fontFamily: 'RocknRoll-One',
+    fontFamily: 'RocknRoll One',
   },
-});
-
-export default ProductFrameScreen;
+}); 

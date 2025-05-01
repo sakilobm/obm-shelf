@@ -38,7 +38,6 @@ export default function CartScreen() {
 
             {/* BLACK BottomSheet container */}
             <View style={styles.cartContainer}>
-
                 <FlatList
                     data={cartItems}
                     keyExtractor={(item) => item.id.toString()}
@@ -72,7 +71,7 @@ export default function CartScreen() {
                                             x{item.quantity} pcs
                                         </CustomText>
                                     </View>
-
+                                    {/* Price ₹ */}
                                     <View style={styles.priceBubble}>
                                         <CustomText variant="subheading" style={{ color: 'black' }}>
                                             ₹ {(item.price * item.quantity).toFixed(2)}
@@ -87,15 +86,18 @@ export default function CartScreen() {
                 {/* Delivery and Total Amount */}
                 <View style={styles.summarySection}>
                     <View style={styles.deliveryRow}>
-                        <CustomText variant="small" style={{ color: 'gray' }}>
+                        <CustomText variant="subheading" style={{ color: 'black', fontSize: 14 }}>
                             Delivery Amount
                         </CustomText>
-                        <CustomText variant="small" style={{ color: 'black' }}>
+                        <CustomText variant="small" style={{ color: 'black', fontSize: 18 }}>
                             ₹50
                         </CustomText>
                     </View>
+                    <CustomText variant="subheading" style={{ color: 'black', fontSize: 20 }}>
+                        Total Amount
+                    </CustomText>
                     <View style={styles.totalRow}>
-                        <CustomText variant="heading" style={{ color: 'black' }}>
+                        <CustomText variant="subheading" style={{ color: 'black', fontFamily: 'Righteous', fontSize: 34 }}>
                             IND {totalAmount.toFixed(0)}
                         </CustomText>
                     </View>
@@ -193,7 +195,11 @@ const styles = StyleSheet.create({
         width: '100%',
         flexDirection: 'row',
         justifyContent: 'space-between',
+        marginHorizontal: 40,
         marginBottom: 10,
+        padding: 10,
+        borderBottomWidth: 1,
+        borderColor: '#1A1A1A',
     },
     totalRow: {
         flexDirection: 'row',

@@ -13,7 +13,7 @@ import BottomBar from '../layout/BottomBar';
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 // Customize bottom sheet height (like 100-120px)
-const BOTTOM_BAR_HEIGHT = SCREEN_HEIGHT * 0.12;
+const BOTTOM_BAR_HEIGHT = SCREEN_HEIGHT * 0.16;
 const DRAG_THRESHOLD = SCREEN_HEIGHT / 3;
 
 const BottomSheet = () => {
@@ -63,7 +63,6 @@ const BottomSheet = () => {
         <View style={StyleSheet.absoluteFill}>
             <GestureDetector gesture={gesture}>
                 <Animated.View style={[styles.container, animatedStyle]}>
-                    <View style={styles.dragLine} />
                     <BottomBar />
                 </Animated.View>
             </GestureDetector>
@@ -76,18 +75,13 @@ const styles = StyleSheet.create({
         width: '100%',
         height: SCREEN_HEIGHT,
         position: 'absolute',
-        top: SCREEN_HEIGHT - 40,
+        top: SCREEN_HEIGHT - 120,
+        // top: SCREEN_HEIGHT - 40,
         backgroundColor: '#1A1A1A',
         alignItems: 'center',
         zIndex: 10,
     },
-    dragLine: {
-        width: 60,
-        height: 6,
-        backgroundColor: '#ccc',
-        borderRadius: 3,
-        marginVertical: 10,
-    },
+
 });
 
 export default BottomSheet;

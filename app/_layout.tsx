@@ -14,7 +14,9 @@ export default function Layout() {
   const theme = colorScheme === 'dark' ? MD3DarkTheme : MD3LightTheme;
 
   const [fontsLoaded] = useFonts({
+    'Raleway-Back': require('../assets/fonts/Raleway-Black.ttf'),
     'Raleway-Bold': require('../assets/fonts/Raleway-Bold.ttf'),
+    'Raleway-SemiBold': require('../assets/fonts/Raleway-SemiBold.ttf'),
     'Raleway-Regular': require('../assets/fonts/Raleway-Regular.ttf'),
     'Raleway-Medium': require('../assets/fonts/Raleway-Medium.ttf'),
     'RocknRoll-One': require('../assets/fonts/RocknRoll_One.ttf'),
