@@ -27,11 +27,11 @@ const ProductFrameDetailScreen = () => {
                 <AntDesign onPress={() => router.back()} style={styles.close} name="closecircleo" size={40} color="white" />
 
                 <View style={styles.detailsCon}>
-                    <Text style={styles.firstTitle}>SIZE</Text>
+                    <Text style={styles.label}>Size</Text>
                     <Text style={styles.firstTitle}>{frame.size}</Text>
-                    <Text style={styles.firstTitle}>NAME</Text>
+                    <Text style={styles.label}>Name</Text>
                     <Text style={styles.firstTitle}>{frame.name}</Text>
-                    <Text style={styles.firstTitle}>PRICE</Text>
+                    <Text style={styles.label}>Price</Text>
                     <Text style={styles.firstTitle}>₹ {frame.price}</Text>
                 </View>
 
@@ -49,10 +49,10 @@ const ProductFrameDetailScreen = () => {
                         router.push('/cart');
                     }}
                 >
-                    <Text style={styles.moreBtnText}>ADD TO CART</Text>
+                    <Text style={styles.addToCart}>ADD TO CART</Text>
                 </TouchableOpacity>
             </View>
-        </View>
+        </View >
     );
 };
 
@@ -91,12 +91,18 @@ const styles = StyleSheet.create({
     detailsCon: {
         alignSelf: 'center',
         alignItems: 'center',
-        marginTop: hp('5%'),
+        marginTop: hp('1%'),
+        gap: hp('3%'),
+    },
+    label: {
+        fontFamily: 'Righteous',
+        fontSize: 16,
+        color: 'white',
     },
     firstTitle: {
-        fontFamily: 'Righteous',
-        marginBottom: hp('3%'),
+        fontFamily: 'Raleway-Bold',
         color: 'white',
+        fontSize: 14,
     },
     moreBtn: {
         width: wp('40%'),
@@ -108,7 +114,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    moreBtnText: {
+    addToCart: {
         fontSize: 10,
         fontFamily: 'RocknRoll One',
     },

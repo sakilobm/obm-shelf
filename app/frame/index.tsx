@@ -11,10 +11,12 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { AntDesign } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import frames from '../../data/frame/frames'; // Adjust path if needed
+import { useCart } from '@/contexts/CartContext';
 
 export default function ProductFrameScreen() {
   const router = useRouter();
   const [currentIndex, setCurrentIndex] = useState(0);
+  const { addToCart } = useCart();
 
   const slideAnim = useRef(new Animated.Value(0)).current;
   const textOpacity = useRef(new Animated.Value(1)).current;
@@ -110,12 +112,33 @@ export default function ProductFrameScreen() {
           <Text style={styles.secondTitle}>{selectedFrame.name}</Text>
         </Animated.View>
         {/* MORE STATE Button */}
-        <TouchableOpacity
-          onPress={() => router.push(`/frame/${selectedFrame.id}`)}
-          style={styles.moreBtn}
-        >
-          <Text style={styles.moreBtnText}>MORE STATE</Text>
-        </TouchableOpacity>
+        <View style={styles.buttonsContainer}>
+
+          <TouchableOpacity
+            onPress={() => router.push(`/frame/${selectedFrame.id}`)}
+            style={styles.secondaryBtn}
+          >
+            <Text style={styles.secondaryText}>MORE</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.primaryBtn}
+            onPress={() => {
+              addToCart({
+                id: selectedFrame.id,
+                title: selectedFrame.name,
+                subtitle: selectedFrame.description,
+                price: Number(selectedFrame.price),
+                image: selectedFrame.image,
+                quantity: 1,
+              });
+              router.push('/cart');
+            }}
+          >
+            <Text style={styles.primaryText}>ADD TO CART</Text>
+          </TouchableOpacity>
+
+        </View>
       </View>
     </View>
   );
@@ -178,10 +201,15 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: wp('5%'),
   },
-  moreBtn: {
+  buttonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 10,
+    marginTop: 20,
+  },
+  primaryBtn: {
     width: wp('30%'),
     height: hp('4%'),
-    marginTop: hp('8%'),
     borderRadius: 30,
     backgroundColor: 'white',
     alignSelf: 'center',
@@ -189,7 +217,34 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     zIndex: 10,
   },
-  moreBtnText: {
+  secondaryBtn: {
+    width: wp('30%'),
+    height: hp('4%'),
+    borderRadius: 30,
+    borderWidth: 2,
+    borderColor: '#fff',
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 10,
+  },
+  moreBtn: {
+    width: wp('30%'),
+    height: hp('4%'),
+    borderRadius: 30,
+    backgroundColor: 'white',
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 10,
+    marginTop: hp('8%'),
+  },
+  secondaryText: {
+    fontSize: 9,
+    fontFamily: 'RocknRoll One',
+    color: '#fff',
+  },
+  primaryText: {
     fontSize: 9,
     fontFamily: 'RocknRoll One',
   },
