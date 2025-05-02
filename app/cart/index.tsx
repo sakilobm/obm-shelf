@@ -3,9 +3,8 @@ import { View, StyleSheet, FlatList, TouchableOpacity, Image, Dimensions } from 
 import { useCart } from '../../contexts/CartContext';
 import CustomText from '../../components/common/CustomText';
 import { useRouter } from 'expo-router';
-import { Swipeable } from 'react-native-gesture-handler';
+import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { Ionicons } from '@expo/vector-icons';
-import Svg, { Path, Rect } from 'react-native-svg';
 
 const { width, height } = Dimensions.get('window');
 

@@ -3,6 +3,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { PaperProvider, MD3LightTheme, MD3DarkTheme } from 'react-native-paper';
 import { useColorScheme } from 'react-native';
 import { CartProvider } from '../contexts/CartContext';
+import { WishlistProvider } from '../contexts/WishlistContext';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { useCallback } from 'react';
@@ -35,7 +36,9 @@ export default function Layout() {
     <GestureHandlerRootView style={{ flex: 1 }} onLayout={onLayoutRootView}>
       <PaperProvider theme={theme}>
         <CartProvider>
-          <Stack screenOptions={{ headerShown: false }} />
+          <WishlistProvider>
+            <Stack screenOptions={{ headerShown: false }} />
+          </WishlistProvider>
         </CartProvider>
       </PaperProvider>
     </GestureHandlerRootView>

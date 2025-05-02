@@ -7,7 +7,8 @@ import CustomText from '../common/CustomText';
 import data from '../../data/mug/mugs';
 import { Ionicons } from '@expo/vector-icons';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-import Svg, { ClipPath, Defs, ForeignObject, LinearGradient, Path, Rect } from 'react-native-svg';
+import Svg, { ClipPath, Defs, ForeignObject, Path, Rect } from 'react-native-svg';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const { width } = Dimensions.get('window');
 const CARD_WIDTH = width * 0.7;
@@ -73,22 +74,21 @@ const MugProductList = () => {
 
                                 {/* Button */}
                                 <TouchableOpacity>
-                                    <ImageBackground
-                                        source={require('../../assets/png/BuyGlassorphismButton.png')}
-                                        style={[styles.buyButton]}
-                                        imageStyle={{ borderRadius: 40, opacity: 0.99 }} // Ensures the image respects the border radius
+                                    <BlurView
+                                        intensity={50}
+                                        style={styles.buyButton}
                                     >
-                                        <Text style={{ fontSize: 20, color: 'black', fontFamily: 'RocknRoll-One', marginLeft: 8, }}>₹{item.price}</Text>
+                                        <LinearGradient
+                                            colors={['rgba(58, 52, 52, 0.19)', 'rgba(255,255,255,0.6)']}
+                                            start={{ x: 0.1, y: 0.7 }}
+                                            end={{ x: 0.9, y: 0.2 }}
+                                            style={StyleSheet.absoluteFill}
+                                        />
+                                        <Text style={styles.price}>₹{item.price}</Text>
                                         <View style={styles.buyIcon}>
-                                            <Svg width="73" height="55" viewBox="0 0 73 55" fill="none">
-                                                <Rect x="72.2361" width="54.6666" height="72.2381" rx="27.3333" transform="rotate(90 72.2361 0)" fill="#1A1A1A" />
-                                                <Path d="M32.7346 19.1084L29.1252 23.0932" stroke="white" strokeWidth="1.75" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round" />
-                                                <Path d="M39.0961 19.1084L42.7055 23.0932" stroke="white" strokeWidth="1.75" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round" />
-                                                <Path d="M25.9443 25.5295C25.9443 23.4986 26.9314 23.334 28.1578 23.334H43.672C44.8984 23.334 45.8855 23.4986 45.8855 25.5295C45.8855 27.8896 44.8984 27.725 43.672 27.725H28.1578C26.9314 27.725 25.9443 27.8896 25.9443 25.5295Z" stroke="white" strokeWidth="1.75" />
-                                                <Path d="M27.4398 27.8906L28.8457 34.0819C29.1647 36.2115 29.9325 37.7703 32.7841 37.7703H38.7964C41.8972 37.7703 42.3559 36.2774 42.7148 34.2136L44.3899 27.8906" stroke="white" strokeWidth="1.75" strokeLinecap="round" />
-                                            </Svg>
+                                            <Image source={require('../../assets/png/BuyIcon.png')} style={{ width: 70, height: 50, }} resizeMode="contain" />
                                         </View>
-                                    </ImageBackground>
+                                    </BlurView>
                                 </TouchableOpacity>
                             </Animated.View>
                         </TouchableOpacity>
@@ -117,6 +117,7 @@ const styles = StyleSheet.create({
         marginRight: SPACING,
         borderRadius: 38,
         overflow: 'hidden',
+        justifyContent: 'space-between',
     },
     blurTopLeft: {
         position: 'absolute',
@@ -139,34 +140,34 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-start',
     },
     productImageCon: {
-        flex: 1, // Ensures the container takes up available space
-        justifyContent: 'center', // Centers the image vertically
-        alignItems: 'flex-end', // Aligns the image to the right
+        position: 'absolute',
+        right: -220,
     },
     productImage: {
-        width: 300,
-        height: 290,
+        width: CARD_WIDTH * 2,
+        height: CARD_WIDTH * 1.3,
+    },
+    price: {
+        fontSize: 20,
+        color: 'black',
+        fontFamily: 'RocknRoll-One',
     },
     buyButton: {
-        position: 'absolute',
-        bottom: 30,
-        left: 28,
-        width: 220,
-        height: 70,
-        borderRadius: 40,
-        borderWidth: 1,
-        borderColor: 'white',
+        height: 69,
         flexDirection: 'row',
         justifyContent: 'space-between',
         resizeMode: 'contain',
         alignItems: 'center',
+        borderRadius: 40,
+        borderWidth: 1,
+        borderColor: 'white',
+        marginHorizontal: 20,
         paddingHorizontal: 20,
-        overflow: 'hidden', // Ensures children stay within the rounded corners
+        marginBottom: 25,
+        overflow: 'hidden',
     },
     buyIcon: {
-        marginRight: -10,
-        // width: 32,
-        // height: 32,
+        marginRight: -8,
     },
 });
 
