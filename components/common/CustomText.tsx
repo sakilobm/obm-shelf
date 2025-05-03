@@ -33,7 +33,7 @@ const fontFamilies = {
     heading: 'Raleway-Bold',
     subheading: 'Raleway-Medium',
     body: 'Raleway-Regular',
-    small: 'Urbanist',
+    small: 'Righteous',
 };
 
 const CustomText: React.FC<CustomTextProps> = ({

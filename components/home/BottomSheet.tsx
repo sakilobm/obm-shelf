@@ -9,6 +9,7 @@ import Animated, {
     Extrapolate,
 } from 'react-native-reanimated';
 import BottomBar from '../layout/BottomBar';
+import { useCart } from '@/contexts/CartContext';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
@@ -19,6 +20,12 @@ const DRAG_THRESHOLD = SCREEN_HEIGHT / 3;
 const BottomSheet = () => {
     const translateY = useSharedValue(0);
     const context = useSharedValue({ y: 0 });
+
+    const { cartItems, removeFromCart } = useCart();
+
+    const RESPONSIVE_HEIGHT = cartItems.length === 0 ? SCREEN_HEIGHT - 40 : SCREEN_HEIGHT - 120;
+    console.log(RESPONSIVE_HEIGHT);
+
 
     const scrollTo = useCallback((destination: number) => {
         'worklet';
@@ -62,7 +69,7 @@ const BottomSheet = () => {
     return (
         <View style={StyleSheet.absoluteFill}>
             <GestureDetector gesture={gesture}>
-                <Animated.View style={[styles.container, animatedStyle]}>
+                <Animated.View style={[styles.container, animatedStyle, { top: RESPONSIVE_HEIGHT }]}>
                     <BottomBar />
                 </Animated.View>
             </GestureDetector>
@@ -75,7 +82,7 @@ const styles = StyleSheet.create({
         width: '100%',
         height: SCREEN_HEIGHT,
         position: 'absolute',
-        top: SCREEN_HEIGHT - 120,
+        // top: SCREEN_HEIGHT - RESPONSIVE_HEIGHT,
         // top: SCREEN_HEIGHT - 40,
         backgroundColor: '#1A1A1A',
         alignItems: 'center',

@@ -64,11 +64,12 @@ const styles = StyleSheet.create({
         backgroundColor: '#1D1A1A',
     },
     tittle: {
-        fontFamily: 'Rubik Mono One',
+        fontFamily: 'Rubik-Mono-One',
         color: '#4A4A4A',
         fontSize: wp('20%'),
         alignSelf: 'center',
         marginTop: hp('15%'),
+        textTransform: 'uppercase',
     },
     frame: {
         position: 'absolute',

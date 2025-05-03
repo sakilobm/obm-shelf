@@ -1,7 +1,12 @@
-import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, Image, FlatList, } from 'react-native';
 import React from 'react';
 import { SvgXml } from 'react-native-svg';
+import { useCart } from '../../contexts/CartContext';
+import { useRouter } from 'expo-router';
+import { Swipeable } from 'react-native-gesture-handler';
+import { Ionicons } from '@expo/vector-icons';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import CustomText from '../common/CustomText';
 
 const BottomBarNavigation = () => {
     const svgXml = `
@@ -11,34 +16,48 @@ const BottomBarNavigation = () => {
     </svg>
   `;
 
+    const { cartItems, removeFromCart } = useCart();
+    const router = useRouter();
+
     return (
         <View style={styles.container}>
             <View style={styles.dragLine} />
             {/* <SvgXml xml={svgXml} style={styles.svgBackground} /> */}
 
             {/* Bottom Bar */}
-
-            <View style={styles.bottomBar}>
-                <View style={styles.cartItem}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <TouchableOpacity style={styles.circleContainer}>
-                            <Text style={styles.circleText}>1</Text>
+            <View style={styles.cartContainer}>
+                {cartItems.map((item) => {
+                    const renderRightActions = () => (
+                        <TouchableOpacity
+                            onPress={() => removeFromCart(item.id)}
+                            style={styles.deleteButton}
+                        >
+                            <Ionicons name="trash" size={24} color="white" />
                         </TouchableOpacity>
+                    );
 
-                        <View style={styles.cartCenter}>
-                            <Text style={styles.cartText}>Cart</Text>
-                            <Text style={styles.cartItemCount}> 1 Item</Text>
-                        </View>
-                    </View>
+                    return (
+                        <Swipeable key={item.id} renderRightActions={renderRightActions}>
+                            <View style={styles.cartItem}>
+                                <View style={styles.cartItemDetails}>
+                                    <CustomText variant="subheading" style={{ color: 'white' }}>
+                                        {item.title}
+                                    </CustomText>
+                                    <CustomText variant="small" style={{ color: 'gray', marginTop: 2 }}>
+                                        {item.subtitle}
+                                    </CustomText>
+                                    <CustomText variant="small" style={{ color: 'white', marginTop: 2 }}>
+                                        x{item.quantity} pcs
+                                    </CustomText>
+                                </View>
 
-                    <TouchableOpacity style={styles.cartButton}>
-                        <Image
-                            source={require('../../assets/png/cartImage.png')}
-                            style={styles.cartIcon}
-                            resizeMode="contain"
-                        />
-                    </TouchableOpacity>
-                </View>
+                                <View style={styles.imageWrapper}>
+                                    <Image source={item.image} style={styles.cartItemImage} resizeMode="cover" />
+                                </View>
+                            </View>
+                        </Swipeable>
+                    );
+                })}
             </View>
         </View>
     );
@@ -58,6 +77,58 @@ const styles = StyleSheet.create({
         borderRadius: 3,
         marginTop: 10,
         alignSelf: 'center',
+    },
+    cartContainer: {
+        flex: 1,
+        backgroundColor: '#1A1A1A',
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30,
+        paddingTop: 10,
+        paddingHorizontal: 16,
+    },
+    cartList: {
+        paddingBottom: 80,
+    },
+    deleteButton: {
+        backgroundColor: 'red',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '80%',
+        width: 70,
+        borderTopRightRadius: 20,
+        borderBottomRightRadius: 20,
+    },
+
+    // cartItem: {
+    //     flexDirection: 'row',
+    //     alignItems: 'center',
+    //     marginBottom: 20,
+    //     backgroundColor: '#222',
+    //     padding: 12,
+    //     borderRadius: 20,
+    // },
+    imageWrapper: {
+        height: 50,
+        width: 50,
+        borderRadius: 25,
+        overflow: 'hidden',
+        backgroundColor: '#fff',
+        // marginRight: 40,
+    },
+    cartItemImage: {
+        height: '100%',
+        width: '100%',
+    },
+    cartItemDetails: {
+        flex: 1,
+    },
+    priceBubble: {
+        backgroundColor: '#FFEC89',
+        paddingHorizontal: 14,
+        paddingVertical: 6,
+        borderRadius: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     svgBackground: {
         position: 'absolute',

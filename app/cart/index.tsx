@@ -9,7 +9,7 @@ import { Ionicons } from '@expo/vector-icons';
 const { width, height } = Dimensions.get('window');
 
 export default function CartScreen() {
-    const { cartItems, totalAmount, removeFromCart } = useCart();
+    const { cartItems, totalAmount, removeFromCart, isInCartList } = useCart();
     const router = useRouter();
 
     const handleMakePayment = () => {
@@ -29,7 +29,7 @@ export default function CartScreen() {
                     Cart
                 </CustomText>
                 <View style={styles.cartCountBubble}>
-                    <CustomText variant="body" style={{ color: 'black' }}>
+                    <CustomText variant="small" style={{ color: 'black', fontSize: 14, }}>
                         {cartItems.length}
                     </CustomText>
                 </View>

@@ -157,11 +157,12 @@ const styles = StyleSheet.create({
     right: wp('6%'),
   },
   tittle: {
-    fontFamily: 'Rubik Mono One',
+    fontFamily: 'Rubik-Mono-One',
     color: '#4A4A4A',
-    fontSize: wp('20%'),
+    fontSize: wp('18%'),
     alignSelf: 'center',
     marginTop: hp('10%'),
+    textTransform: 'uppercase',
   },
   frameWrapper: {
     position: 'absolute',

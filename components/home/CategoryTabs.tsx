@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, ScrollView, FlatList } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import { FontFamily } from '../GlobalStyles'; // Optional, if you're using a custom font
 
 const categories = [
     { title: 'All', icon: null, route: '/' },
-    { title: 'Mugs', icon: 'cafe-outline', route: '/mug' },
+    { title: 'Mugs', icon: 'cafe-outline', route: '/' },
     { title: 'Frame', icon: 'images-outline', route: '/frame' },
     { title: 'Album', icon: 'albums-outline', route: '/album' },
 ];
 
+// FIXME: Category Not Properly Active When Back From Frame
 const TabBarCategory = () => {
     const [selected, setSelected] = useState('Mugs');
     const router = useRouter();

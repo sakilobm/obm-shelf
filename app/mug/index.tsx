@@ -7,7 +7,7 @@ import CustomText from '../../components/common/CustomText';
 import mugs from '../../data/mug/mugs';
 import { useCart } from '../../contexts/CartContext';
 import Svg, { Path, Rect } from 'react-native-svg';
-
+import * as Haptics from 'expo-haptics';
 // We Should Do UI And Logic For Select Multiple Mugs For Cart
 
 const { width } = Dimensions.get('window');
@@ -65,6 +65,8 @@ export default function ProductMugScreen() {
 
   const handleAddSelectedToCart = () => {
     if (!isSelected) {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      Toast.show('Please select at least one mug to add to the cart.!');
       alert('Please select at least one mug to add to the cart.');
       return;
     }
