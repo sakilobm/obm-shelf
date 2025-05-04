@@ -17,7 +17,6 @@ const SPACING = 20;
 const FULL_CARD_WIDTH = CARD_WIDTH + SPACING;
 
 const MugProductList = () => {
-    const { colors } = useTheme();
     const router = useRouter();
     const scrollX = useRef(new Animated.Value(0)).current;
 
@@ -50,104 +49,107 @@ const MugProductList = () => {
     }
 
     return (
-        <View style={styles.container}>
-            <View style={styles.titleRow}>
-                <CustomText variant="heading" style={{ fontSize: 24, fontFamily: 'Raleway-Regular', }}>Mugs Collections</CustomText>
-                <TouchableOpacity style={{ marginRight: 12, }} onPress={() => { }}>
-                    <FontAwesome5 name="long-arrow-alt-right" size={30} color="black" />
-                </TouchableOpacity>
-            </View>
+        <>
+            <View style={styles.container}>
+                <View style={styles.titleRow}>
+                    <CustomText variant="heading" style={{ fontSize: 24, fontFamily: 'Raleway-Regular', }}>Mugs Collections</CustomText>
+                    <TouchableOpacity style={{ marginRight: 12, }} onPress={() => { }}>
+                        <FontAwesome5 name="long-arrow-alt-right" size={30} color="black" />
+                    </TouchableOpacity>
+                </View>
 
-            <Animated.FlatList
-                data={Mugs}
-                keyExtractor={(item) => item.title}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                snapToInterval={FULL_CARD_WIDTH}
-                decelerationRate="fast"
-                bounces={false}
-                contentContainerStyle={{ paddingHorizontal: SPACING }}
-                scrollEventThrottle={16}
-                onScroll={Animated.event(
-                    [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-                    { useNativeDriver: true }
-                )}
-                renderItem={({ item, index }) => {
-                    const inputRange = [
-                        (index - 1) * FULL_CARD_WIDTH,
-                        index * FULL_CARD_WIDTH,
-                        (index + 1) * FULL_CARD_WIDTH,
-                    ];
+                <Animated.FlatList
+                    data={Mugs}
+                    keyExtractor={(item) => item.title}
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    snapToInterval={FULL_CARD_WIDTH}
+                    decelerationRate="fast"
+                    bounces={false}
+                    contentContainerStyle={{ paddingHorizontal: SPACING }}
+                    scrollEventThrottle={16}
+                    onScroll={Animated.event(
+                        [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+                        { useNativeDriver: true }
+                    )}
+                    renderItem={({ item, index }) => {
+                        const inputRange = [
+                            (index - 1) * FULL_CARD_WIDTH,
+                            index * FULL_CARD_WIDTH,
+                            (index + 1) * FULL_CARD_WIDTH,
+                        ];
 
-                    const scale = scrollX.interpolate({
-                        inputRange,
-                        outputRange: [0.9, 1, 0.9],
-                        extrapolate: 'clamp',
-                    });
+                        const scale = scrollX.interpolate({
+                            inputRange,
+                            outputRange: [0.9, 1, 0.9],
+                            extrapolate: 'clamp',
+                        });
 
-                    return (
-                        <TouchableOpacity onPress={() => router.push('/mug')}>
-                            <Animated.View style={[styles.card, { backgroundColor: item.color, transform: [{ scale }] }]}>
-                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
-                                    {/* Top Content */}
-                                    <BlurView intensity={250} style={styles.topContentBlur}>
-                                        <LinearGradient
-                                            colors={['rgba(0, 0, 0, 0.34)', 'rgba(255, 255, 255, 0.29)']}
-                                            start={{ x: 0.1, y: 0.7 }}
-                                            end={{ x: 0.9, y: 0.2 }}
-                                            style={StyleSheet.absoluteFill}
-                                        />
-                                        <View style={styles.textContainer}>
-                                            <Text style={styles.mugHeading}>{item.title.split(' ')[0]}{'\n'}{item.title.split(' ')[1]}</Text>
-                                            <View style={[styles.categoryBadge, { backgroundColor: item.cateConClr }]}>
-                                                <CustomText variant="small" style={{ color: item.color, textShadowColor: 'black', }}>{item.category}</CustomText>
-                                            </View>
-                                        </View>
-                                    </BlurView>
-                                    {/* Wishlist Button */}
-                                    <TouchableOpacity
-                                        style={styles.heartIcon}
-                                        onPress={() => toggleWishlist(item.id)}
-                                    >
-                                        <View style={styles.heartIconCon}>
-                                            <Ionicons
-                                                name={isInWishlist(item.id) ? 'heart' : 'heart-outline'}
-                                                size={24}
-                                                color={isInWishlist(item.id) ? '#D74343' : 'white'}
+                        return (
+                            <TouchableOpacity onPress={() => router.push('/mug')}>
+                                <Animated.View style={[styles.card, { backgroundColor: item.color, transform: [{ scale }] }]}>
+                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
+                                        {/* Top Content */}
+                                        <BlurView intensity={250} style={styles.topContentBlur}>
+                                            <LinearGradient
+                                                colors={['rgba(0, 0, 0, 0.34)', 'rgba(255, 255, 255, 0.29)']}
+                                                start={{ x: 0.1, y: 0.7 }}
+                                                end={{ x: 0.9, y: 0.2 }}
+                                                style={StyleSheet.absoluteFill}
                                             />
-                                        </View>
+                                            <View style={styles.textContainer}>
+                                                <Text style={styles.mugHeading}>{item.title.split(' ')[0]}{'\n'}{item.title.split(' ')[1]}</Text>
+                                                <View style={[styles.categoryBadge, { backgroundColor: item.cateConClr }]}>
+                                                    <CustomText variant="small" style={{ color: item.color, textShadowColor: 'black', }}>{item.category}</CustomText>
+                                                </View>
+                                            </View>
+                                        </BlurView>
+                                        {/* Wishlist Button */}
+                                        <TouchableOpacity
+                                            style={styles.heartIcon}
+                                            onPress={() => toggleWishlist(item.id)}
+                                        >
+                                            <View style={styles.heartIconCon}>
+                                                <Ionicons
+                                                    name={isInWishlist(item.id) ? 'heart' : 'heart-outline'}
+                                                    size={24}
+                                                    color={isInWishlist(item.id) ? '#D74343' : 'white'}
+                                                />
+                                            </View>
+                                        </TouchableOpacity>
+                                    </View>
+
+                                    {/* Image */}
+                                    <View style={styles.productImageCon}>
+                                        <Image source={item.image} style={styles.productImage} resizeMode="contain" />
+                                    </View>
+
+                                    {/* Button */}
+                                    <TouchableOpacity>
+                                        <BlurView
+                                            intensity={50}
+                                            style={styles.buyButton}
+                                        >
+                                            <LinearGradient
+                                                colors={['rgba(58, 52, 52, 0.19)', 'rgba(255,255,255,0.6)']}
+                                                start={{ x: 0.1, y: 0.7 }}
+                                                end={{ x: 0.9, y: 0.2 }}
+                                                style={StyleSheet.absoluteFill}
+                                            />
+                                            <Text style={styles.price}>₹{item.price}</Text>
+                                            <View style={styles.buyIcon}>
+                                                <Image source={require('../../assets/png/BuyIcon.png')} style={{ width: 70, height: 50, }} resizeMode="contain" />
+                                            </View>
+                                        </BlurView>
                                     </TouchableOpacity>
-                                </View>
+                                </Animated.View>
+                            </TouchableOpacity >
+                        );
+                    }}
+                />
+            </View>
+        </>
 
-                                {/* Image */}
-                                <View style={styles.productImageCon}>
-                                    <Image source={item.image} style={styles.productImage} resizeMode="contain" />
-                                </View>
-
-                                {/* Button */}
-                                <TouchableOpacity>
-                                    <BlurView
-                                        intensity={50}
-                                        style={styles.buyButton}
-                                    >
-                                        <LinearGradient
-                                            colors={['rgba(58, 52, 52, 0.19)', 'rgba(255,255,255,0.6)']}
-                                            start={{ x: 0.1, y: 0.7 }}
-                                            end={{ x: 0.9, y: 0.2 }}
-                                            style={StyleSheet.absoluteFill}
-                                        />
-                                        <Text style={styles.price}>₹{item.price}</Text>
-                                        <View style={styles.buyIcon}>
-                                            <Image source={require('../../assets/png/BuyIcon.png')} style={{ width: 70, height: 50, }} resizeMode="contain" />
-                                        </View>
-                                    </BlurView>
-                                </TouchableOpacity>
-                            </Animated.View>
-                        </TouchableOpacity >
-                    );
-                }}
-            />
-        </View >
     );
 };
 
