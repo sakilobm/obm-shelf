@@ -7,7 +7,6 @@ import CustomText from '../../components/common/CustomText';
 import mugs from '../../data/mug/mugs';
 import { useCart } from '../../contexts/CartContext';
 import Svg, { Path, Rect } from 'react-native-svg';
-// import Toast from 'react-native-root-toast';
 // We Should Do UI And Logic For Select Multiple Mugs For Cart
 
 const { width } = Dimensions.get('window');
@@ -65,10 +64,6 @@ export default function ProductMugScreen() {
 
   const handleAddSelectedToCart = () => {
     if (!isSelected) {
-      // Toast.show('Please select at least one mug to add to the cart.', {
-      //   duration: Toast.durations.SHORT,
-      //   position: Toast.positions.BOTTOM,
-      // });
       alert('Please select at least one mug to add to the cart.');
       return;
     }

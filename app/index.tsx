@@ -11,6 +11,8 @@ import BottomSheet from '../components/home/BottomSheet';
 export default function HomeScreen() {
   const { colors } = useTheme();
   const { width } = useWindowDimensions();
+  console.log("Hello It's Index App");
+
   return (
     <ScrollView style={{ backgroundColor: colors.background }} contentContainerStyle={styles.container}>
       <HomeHeader />

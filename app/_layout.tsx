@@ -7,6 +7,7 @@ import { WishlistProvider } from '../contexts/WishlistContext';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { useCallback } from 'react';
+import { Slot } from 'expo-router';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -39,6 +40,7 @@ export default function Layout() {
         <CartProvider>
           <WishlistProvider>
             <Stack screenOptions={{ headerShown: false }} />
+            {/* <Slot /> */}
           </WishlistProvider>
         </CartProvider>
       </PaperProvider>
