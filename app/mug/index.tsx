@@ -7,7 +7,6 @@ import CustomText from '../../components/common/CustomText';
 import mugs from '../../data/mug/mugs';
 import { useCart } from '../../contexts/CartContext';
 import Svg, { Path, Rect } from 'react-native-svg';
-// We Should Do UI And Logic For Select Multiple Mugs For Cart
 
 const { width } = Dimensions.get('window');
 export default function ProductMugScreen() {

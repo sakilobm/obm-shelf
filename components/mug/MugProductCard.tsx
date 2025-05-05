@@ -10,6 +10,7 @@ import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import Svg, { ClipPath, Defs, ForeignObject, Path, Rect } from 'react-native-svg';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useWishlist } from '@/contexts/WishlistContext';
+import ToastManager, { Toast } from 'toastify-react-native'
 
 const { width } = Dimensions.get('window');
 const CARD_WIDTH = width * 0.7;
@@ -38,6 +39,7 @@ const MugProductList = () => {
                             price: Number(mug.price),
                             image: mug.image,
                         });
+                        Toast.info('Added To Your Wishlist', 'bottom')
                     }
                 });
             }
@@ -142,6 +144,7 @@ const MugProductList = () => {
                     );
                 }}
             />
+            <ToastManager />
         </View>
 
     );

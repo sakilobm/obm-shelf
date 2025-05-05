@@ -5,6 +5,7 @@ import CustomText from '../../components/common/CustomText';
 import { useRouter } from 'expo-router';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { Ionicons } from '@expo/vector-icons';
+import ToastManager, { Toast } from 'toastify-react-native'
 
 const { width, height } = Dimensions.get('window');
 
@@ -14,7 +15,8 @@ export default function CartScreen() {
 
     const handleMakePayment = () => {
         if (cartItems.length === 0) {
-            alert('Your cart is empty! Please add items to your cart before proceeding to payment.');
+            Toast.warn('Your cart is empty! Please add items to your cart before proceeding to payment.', 'bottom')
+            // alert('Your cart is empty! Please add items to your cart before proceeding to payment.');
             return;
         }
         router.push('/PaymentSuccess');
@@ -116,6 +118,7 @@ export default function CartScreen() {
                     </View>
                 </TouchableOpacity>
             </View>
+            <ToastManager />
         </View>
     );
 }
