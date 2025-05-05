@@ -22,24 +22,25 @@ const MugProductList = () => {
 
     const { wishlistItems, addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
 
-    const toggleWishlist = (id: number) => {
-        if (isInWishlist(id)) {
-            removeFromWishlist(id);
+    const toggleWishlist = (id: number, productType: string) => {
+        if (isInWishlist(id, productType)) {
+            removeFromWishlist(id, productType);
         } else {
-            Object.keys(Mugs).forEach(() => {
-                if (!isInWishlist(id)) {
+            if (!isInWishlist(id, productType)) {
+                Object.keys(Mugs).forEach(() => {
                     const mug = Mugs.find((m) => m.id === Number(id));
                     if (mug) {
                         addToWishlist({
                             id: mug.id,
+                            productType: mug.productType,
                             title: mug.title,
                             subtitle: mug.category,
                             price: Number(mug.price),
                             image: mug.image,
                         });
                     }
-                }
-            });
+                });
+            }
         }
     }
 
@@ -101,13 +102,13 @@ const MugProductList = () => {
                                     {/* Wishlist Button */}
                                     <TouchableOpacity
                                         style={styles.heartIcon}
-                                        onPress={() => toggleWishlist(item.id)}
+                                        onPress={() => toggleWishlist(item.id, item.productType)}
                                     >
                                         <View style={styles.heartIconCon}>
                                             <Ionicons
-                                                name={isInWishlist(item.id) ? 'heart' : 'heart-outline'}
+                                                name={isInWishlist(item.id, item.productType) ? 'heart' : 'heart-outline'}
                                                 size={24}
-                                                color={isInWishlist(item.id) ? '#D74343' : 'white'}
+                                                color={isInWishlist(item.id, item.productType) ? '#D74343' : 'white'}
                                             />
                                         </View>
                                     </TouchableOpacity>

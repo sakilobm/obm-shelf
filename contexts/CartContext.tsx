@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState } from 'react';
 
 interface CartItem {
     id: number;
+    productType: string;
     title: string;
     subtitle: string;
     price: number;
@@ -12,10 +13,10 @@ interface CartItem {
 interface CartContextType {
     cartItems: CartItem[];
     addToCart: (item: CartItem) => void;
-    removeFromCart: (id: number) => void;
+    removeFromCart: (id: number, productType: string) => void;
     totalAmount: number;
     clearCart: () => void;
-    isInCartList: (id: number) => boolean;
+    isInCartList: (id: number, productType: string) => boolean;
 }
 
 const CartContext = createContext<CartContextType | null>(null);
@@ -35,7 +36,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     const addToCart = (newItem: CartItem) => {
         setCartItems((prevItems) => {
-            const existingItemIndex = prevItems.findIndex(item => item.id === newItem.id);
+            const existingItemIndex = prevItems.findIndex(item => item.id === newItem.id && item.productType === newItem.productType);
 
             // If item already in cart
             if (existingItemIndex !== -1) {
@@ -60,12 +61,12 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         });
     };
 
-    const isInCartList = (id: number) => {
-        return cartItems.some(item => item.id === id);
+    const isInCartList = (id: number, productType: string) => {
+        return cartItems.some(item => item.id === id && item.productType === productType);
     };
 
-    const removeFromCart = (id: number) => {
-        setCartItems(prev => prev.filter(item => item.id !== id));
+    const removeFromCart = (id: number, productType: string) => {
+        setCartItems(prev => prev.filter(item => !(item.id === id && item.productType === productType)));
     };
 
     const totalAmount = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 50); // 50 = Delivery charge

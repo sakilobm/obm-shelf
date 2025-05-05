@@ -40,13 +40,13 @@ export default function WishlistScreen() {
       <View style={styles.cartContainer}>
         <FlatList
           data={wishlistItems}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={(item) => `${item.productType}-${item.id}`}
           contentContainerStyle={styles.cartList}
 
           renderItem={({ item }) => {
             const renderRightActions = () => (
               <TouchableOpacity
-                onPress={() => removeFromWishlist(item.id)}
+                onPress={() => removeFromWishlist(item.id, item.productType)}
                 style={styles.deleteButton}
               >
                 <Ionicons name="trash" size={24} color="white" />

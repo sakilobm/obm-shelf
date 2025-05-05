@@ -1,6 +1,7 @@
 export default [
     {
         id: 1,
+        productType: 'frame',
         name: 'Wooden Frame',
         size: '12x18',
         frameInch: 2,
@@ -14,6 +15,7 @@ export default [
     },
     {
         id: 2,
+        productType: 'frame',
         name: 'Classic Frame',
         size: '16x20',
         frameInch: 1.5,
@@ -27,6 +29,7 @@ export default [
     },
     {
         id: 3,
+        productType: 'frame',
         name: 'Modern Frame',
         size: '18x24',
         frameInch: 2.5,
@@ -40,6 +43,7 @@ export default [
     },
     {
         id: 4,
+        productType: 'frame',
         name: 'Leaf Design Frame',
         size: '10x15',
         frameInch: 1.8,
@@ -53,6 +57,7 @@ export default [
     },
     {
         id: 5,
+        productType: 'frame',
         name: 'Plain Red Frame',
         size: '8x12',
         frameInch: 1.2,
@@ -66,6 +71,7 @@ export default [
     },
     {
         id: 6,
+        productType: 'frame',
         name: 'Deep Violet Frame',
         size: '14x20',
         frameInch: 2,

@@ -9,7 +9,7 @@ import { Ionicons } from '@expo/vector-icons';
 const { width, height } = Dimensions.get('window');
 
 export default function CartScreen() {
-    const { cartItems, totalAmount, removeFromCart, isInCartList } = useCart();
+    const { cartItems, totalAmount, removeFromCart } = useCart();
     const router = useRouter();
 
     const handleMakePayment = () => {
@@ -39,13 +39,13 @@ export default function CartScreen() {
             <View style={styles.cartContainer}>
                 <FlatList
                     data={cartItems}
-                    keyExtractor={(item) => item.id.toString()}
+                    keyExtractor={(item) => `${item.productType}-${item.id}`}
                     contentContainerStyle={styles.cartList}
 
                     renderItem={({ item }) => {
                         const renderRightActions = () => (
                             <TouchableOpacity
-                                onPress={() => removeFromCart(item.id)}
+                                onPress={() => removeFromCart(item.id, item.productType)}
                                 style={styles.deleteButton}
                             >
                                 <Ionicons name="trash" size={24} color="white" />
@@ -72,7 +72,7 @@ export default function CartScreen() {
                                     </View>
                                     {/* Price ₹ */}
                                     <View style={styles.priceBubble}>
-                                        <CustomText variant="subheading" style={{ color: 'black' }}>
+                                        <CustomText variant="subheading" style={{ color: 'black', fontSize: 18, marginTop: -5, }}>
                                             ₹ {(item.price * item.quantity).toFixed(2)}
                                         </CustomText>
                                     </View>

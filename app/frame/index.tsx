@@ -126,6 +126,7 @@ export default function ProductFrameScreen() {
             onPress={() => {
               addToCart({
                 id: selectedFrame.id,
+                productType: 'frame',
                 title: selectedFrame.name,
                 subtitle: selectedFrame.description,
                 price: Number(selectedFrame.price),

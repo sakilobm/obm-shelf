@@ -63,25 +63,49 @@ export default function ProductMugScreen() {
   };
 
   const handleAddSelectedToCart = () => {
-    if (!isSelected) {
-      alert('Please select at least one mug to add to the cart.');
+    let atLeastOneAdded = false;
+
+    if (isSelected) {
+      Object.keys(selectedMugs).forEach((id) => {
+        if (selectedMugs[Number(id)]) {
+          const mug = mugs.find((m) => m.id === Number(id));
+          if (mug) {
+            addToCart({
+              id: mug.id,
+              productType: 'mug',
+              title: mug.title,
+              subtitle: mug.category,
+              price: Number(mug.price),
+              image: mug.image,
+              quantity: quantities[mug.id] || 1,
+            });
+            atLeastOneAdded = true;
+          }
+        }
+      });
+    }
+
+    const currentMug = mugs[currentMugIndex];
+    const isCurrentSelected = selectedMugs[currentMug.id] || false;
+
+    if (!isCurrentSelected) {
+      addToCart({
+        id: currentMug.id,
+        productType: 'mug',
+        title: currentMug.title,
+        subtitle: currentMug.category,
+        price: Number(currentMug.price),
+        image: currentMug.image,
+        quantity: quantities[currentMug.id] || 1,
+      });
+      atLeastOneAdded = true;
+    }
+
+    if (!atLeastOneAdded) {
+      alert('Please select or scroll to a mug to add.');
       return;
     }
-    Object.keys(selectedMugs).forEach((id) => {
-      if (selectedMugs[Number(id)]) {
-        const mug = mugs.find((m) => m.id === Number(id));
-        if (mug) {
-          addToCart({
-            id: mug.id,
-            title: mug.title,
-            subtitle: mug.category,
-            price: Number(mug.price),
-            image: mug.image,
-            quantity: quantities[mug.id] || 1,
-          });
-        }
-      }
-    });
+
     router.push('/cart');
   };
 
@@ -154,7 +178,7 @@ export default function ProductMugScreen() {
 
       {/* Price Tag */}
       <View style={styles.priceTag}>
-        <CustomText variant="subheading">
+        <CustomText variant="subheading" style={{ marginTop: -5, }}>
           ₹ {((Number(selectedMug.price) || 0) * selectedQuantity).toFixed(2)}
         </CustomText>
       </View>

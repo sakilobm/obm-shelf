@@ -29,7 +29,7 @@ const BottomBarNavigation = () => {
                 {cartItems.map((item) => {
                     const renderRightActions = () => (
                         <TouchableOpacity
-                            onPress={() => removeFromCart(item.id)}
+                            onPress={() => removeFromCart(item.id,item.productType)}
                             style={styles.deleteButton}
                         >
                             <Ionicons name="trash" size={24} color="white" />

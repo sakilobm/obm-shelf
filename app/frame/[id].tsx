@@ -40,6 +40,7 @@ const ProductFrameDetailScreen = () => {
                     onPress={() => {
                         addToCart({
                             id: frame.id,
+                            productType: 'frame',
                             title: frame.name,
                             subtitle: frame.description,
                             price: Number(frame.price),
