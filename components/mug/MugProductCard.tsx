@@ -24,10 +24,8 @@ const MugProductList = () => {
 
     const toggleWishlist = (id: number) => {
         if (isInWishlist(id)) {
-            console.log("Removed From Wishlist " + id);
             removeFromWishlist(id);
         } else {
-            console.log("Added To Wishlist " + id);
             Object.keys(Mugs).forEach(() => {
                 if (!isInWishlist(id)) {
                     const mug = Mugs.find((m) => m.id === Number(id));

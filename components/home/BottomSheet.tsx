@@ -24,8 +24,6 @@ const BottomSheet = () => {
     const { cartItems, removeFromCart } = useCart();
 
     const RESPONSIVE_HEIGHT = cartItems.length === 0 ? SCREEN_HEIGHT - 40 : SCREEN_HEIGHT - 120;
-    console.log(RESPONSIVE_HEIGHT);
-
 
     const scrollTo = useCallback((destination: number) => {
         'worklet';
