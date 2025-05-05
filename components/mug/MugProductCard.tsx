@@ -23,9 +23,6 @@ const MugProductList = () => {
     const { wishlistItems, addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
 
     const toggleWishlist = (id: number) => {
-        console.log("Entered In Wisshlist");
-        console.log("wishlist =>" + wishlistItems);
-
         if (isInWishlist(id)) {
             console.log("Removed From Wishlist " + id);
             removeFromWishlist(id);

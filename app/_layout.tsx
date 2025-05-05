@@ -8,10 +8,12 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { useCallback } from 'react';
 import { Slot } from 'expo-router';
+import Test from './test';
 
 SplashScreen.preventAutoHideAsync();
 
 export default function Layout() {
+
   const colorScheme = useColorScheme();
   const theme = colorScheme === 'dark' ? MD3DarkTheme : MD3LightTheme;
 
@@ -36,14 +38,7 @@ export default function Layout() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }} onLayout={onLayoutRootView}>
-      <PaperProvider theme={theme}>
-        <CartProvider>
-          <WishlistProvider>
-            <Stack screenOptions={{ headerShown: false }} />
-            {/* <Slot /> */}
-          </WishlistProvider>
-        </CartProvider>
-      </PaperProvider>
+      <Test />
     </GestureHandlerRootView>
   );
 }
