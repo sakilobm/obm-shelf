@@ -40,10 +40,10 @@ export default function SettingsScreen() {
     });
 
     const settingsOptions: { icon: string; location: '/' | '/wishlist' | '/cart' | '/settings' | ''; image: any; label: string }[] = [
-        { icon: 'person', location: '', image: require('../../assets/png/profile_icon.png'), label: 'Profile' },
+        { icon: 'person', location: '/', image: require('../../assets/png/profile_icon.png'), label: 'Profile' },
         { icon: 'shopping-cart', location: '/cart', image: require('../../assets/png/cart_icon.png'), label: 'My orders' },
         { icon: 'favorite-border', location: '/wishlist', image: require('../../assets/png/favorites_icon.png'), label: 'Favorites' },
-        { icon: 'local-shipping', location: '', image: require('../../assets/png/delivery_icon.png'), label: 'Delivery' },
+        { icon: 'local-shipping', location: '/', image: require('../../assets/png/delivery_icon.png'), label: 'Delivery' },
         { icon: 'settings', location: '/settings', image: require('../../assets/png/settings_icon.png'), label: 'Settings' },
     ];
 
