@@ -14,7 +14,7 @@ export default function AdBanner() {
             <BannerAd
                 adUnitID={
                     Platform.OS === 'android'
-                        ? 'ca-app-pub-3940256099942544/6300978111' // Test Android Banner ID
+                        ? process.env.ADMOB_AD_UNIT_ID // Test Android Banner ID
                         : 'ca-app-pub-3940256099942544/2934735716' // Test iOS Banner ID
                 }
                 adSize="FULL_BANNER"
