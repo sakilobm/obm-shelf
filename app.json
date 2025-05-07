@@ -33,6 +33,14 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
+      ],
+      [
+        "react-native-admob-native-ads",
+        {
+          "androidAppId": "ca-app-pub-3194395858987595~7717192541",
+          "iosAppId": "ca-app-pub-3940256099942544~1458002511",
+          "facebookMediation": false
+        }
       ]
     ],
     "experiments": {
