@@ -23,6 +23,9 @@
       }
     },
     "production": {
+      "android": {
+        "buildType": "app-bundle"
+      },
       "autoIncrement": true,
       "env": {
         "ADMOB_AD_UNIT_ID": "ca-app-pub-3194395858987595/8370368048" // Real ID
