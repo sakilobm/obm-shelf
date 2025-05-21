@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { View, StyleSheet, Platform } from 'react-native';
 import BannerAd, { AdManager } from 'react-native-admob-native-ads';
+import Constants from 'expo-constants';
 
 export default function AdBanner() {
     useEffect(() => {
@@ -9,14 +10,15 @@ export default function AdBanner() {
         });
     }, []);
 
+    const adUnitId = Platform.select({
+        android: Constants.expoConfig?.extra?.ADMOB_AD_UNIT_ID,
+        ios: 'ca-app-pub-3940256099942544/2934735716',
+    });
+
     return (
         <View style={styles.adContainer}>
             <BannerAd
-                adUnitID={
-                    Platform.OS === 'android'
-                        ? process.env.ADMOB_AD_UNIT_ID // Test Android Banner ID
-                        : 'ca-app-pub-3940256099942544/2934735716' // Test iOS Banner ID
-                }
+                adUnitID={adUnitId}
                 adSize="FULL_BANNER"
             />
         </View>
