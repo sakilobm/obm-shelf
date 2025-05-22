@@ -1,11 +1,11 @@
 {
   "expo": {
     "name": "Honlor 2",
-    "slug": "OBMShelf",
+    "slug": "honlor2",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "scheme": "honlor2",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
@@ -16,7 +16,7 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.b.sakil.OBMShelf"
+      "package": "com.sakil.honlor2"
     },
     "web": {
       "bundler": "metro",
@@ -46,12 +46,13 @@
     "experiments": {
       "typedRoutes": true
     },
+    "owner": "b.sakil",
     "extra": {
       "router": {
         "origin": false
       },
       "eas": {
-        "projectId": "ea1acabd-72d1-4f2f-8349-aaa675b81394"
+        "projectId": "6d3c1302-6611-40fa-83d6-49eddbb82aea"
       }
     }
   }

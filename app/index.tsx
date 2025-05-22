@@ -21,7 +21,7 @@ export default function HomeScreen() {
     <ScrollView style={{ backgroundColor: colors.background }} contentContainerStyle={styles.container}>
       <HomeHeader />
       <CategoryTabs />
-      <AdBanner />
+      {/* <AdBanner /> */}
       <MugProductCard />
       <BottomSheet />
     </ScrollView>
